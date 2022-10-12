@@ -8,4 +8,7 @@ urlpatterns = [
     path('', include('authenticate_user.urls')),
     path('', include('human_resource.urls')),
     path('', include('student.urls')),
+    path('', include('administrator.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

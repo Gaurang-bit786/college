@@ -4,6 +4,13 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
+class Course(models.Model):
+    image = models.ImageField(upload_to='course/',null=True,blank=True)
+    course_name = models.CharField(max_length=150)
+    date = models.DateField(auto_now_add=False,null=True,blank=True)
+    description = models.TextField(null=True,blank=True)
+    def __str__(self):
+        return self.course_name
 
 
 class UserManager(BaseUserManager):
@@ -52,6 +59,8 @@ class User(AbstractUser, PermissionsMixin):
     profile_pic = models.ImageField(upload_to='profile/',null=True,blank=True)
     username = models.CharField(_('username'),max_length=150,unique=True)
     email = models.EmailField(null=True,blank=True)
+    course = models.OneToOneField(Course, on_delete=models.CASCADE,null=True,blank=True)
+    
     phone_number = models.CharField(max_length=15,null=True,blank=True)
     address = models.ForeignKey(Addres,on_delete=models.CASCADE,null=True,blank=True)
     
@@ -67,6 +76,14 @@ class User(AbstractUser, PermissionsMixin):
         super(User,self).save(*agrs,**kwagrs)
         
 
+
+class Resume(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='resume')
+    resume = models.FileField(upload_to='resume/',null=True,blank=True)
+    
+    def __str__(self):
+        return self.user.username
+    
 
 
 class Subscriber(models.Model):

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import *
 from student.models import *
+from import_export.admin import ImportExportMixin
+
 # Register your models here.
 
 
@@ -10,23 +12,33 @@ class UserQualification(admin.TabularInline):
     extra = 0
 
 
-class UserAdmin(admin.ModelAdmin):
-    inlines = [UserQualification]
+class UserResume(admin.TabularInline):
+    model = Resume 
+    extra = 0
+
+
+class UserAdmin(ImportExportMixin,admin.ModelAdmin):
+    inlines = [UserQualification, UserResume]
     list_display = ['username','email','phone_number','is_superuser','is_staff','is_active']
     list_filter = ['username','email','phone_number','is_superuser','is_staff','is_active']
     search_fields = ['username','email','phone_number','is_superuser','is_staff','is_active']
     list_editable = ['is_staff','is_active']
     list_max_show_all = 10
-    list_per_page = 20
-
-    fields = (
-        ('profile_pic','username','first_name','last_name','email','is_active','is_staff','is_superuser','date_joined','address','groups','user_permissions')
-    )
-
+    list_per_page = 20  
+    
 admin.site.register(User,UserAdmin)
 
 
 
+@admin.register(ContactDetails)
+class ContactDetailAdmin(ImportExportMixin,admin.ModelAdmin):
+    pass
+
+
+@admin.register(Course)
+class CourseAdmin(ImportExportMixin,admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Addres)
-admin.site.register(ContactDetails)
 admin.site.register(Subscriber)

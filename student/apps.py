@@ -5,3 +5,6 @@ class StudentConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'student'
     verbose_name = 'Students'
+
+    def signals(self):
+        import student.signals
